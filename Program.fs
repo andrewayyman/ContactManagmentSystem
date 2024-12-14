@@ -36,6 +36,8 @@ let isValidEmail (email: string): bool =
     email.Contains("@") 
 
 
+
+
 // Add ui elements to the form
 form.Controls.Add(nameLabel)
 form.Controls.Add(nameBox)
@@ -52,6 +54,53 @@ form.Controls.Add(searchButton)
 form.Controls.Add(contactList)
 // ------------------------- Form ------------------------- //
 
+////////////////// add contact /////////////////
+
+//contact type
+type Contact = {
+    Name: string
+    PhoneNumber: string
+    Email: string
+}
+
+// List to store contacts
+let mutable contacts: Contact list = []
+
+
+// Function to add a contact
+let addContact (contact: Contact): unit =
+    contacts <- contact :: contacts
+
+// Function to update the ListBox with contacts after adding
+let updateContactList (): unit =
+    contactList.Items.Clear()
+    contacts
+    |> List.iter (fun c -> 
+        contactList.Items.Add($"Name: {c.Name}, Phone: {c.PhoneNumber}, Email: {c.Email}") |> ignore
+    )
+
+
+// Add event handlers 
+addButton.Click.Add (fun _ ->
+    let name: string = nameBox.Text
+    let phone: string = phoneBox.Text
+    let email: string = emailBox.Text
+    if name <> "" && phone <> "" && email <> "" then
+        if not (isValidEmail email) then
+            MessageBox.Show("Please enter a valid email address!") |> ignore
+        elif phone.Length > 11 then
+            MessageBox.Show("Phone number must be 11 digits !") |> ignore
+        else
+            let newContact: Contact = { Name = name; PhoneNumber = phone; Email = email }
+            addContact newContact
+            updateContactList ()
+            MessageBox.Show($"Contact : {name} added successfully") |> ignore
+            nameBox.Clear()
+            phoneBox.Clear()
+            emailBox.Clear()
+    else
+        MessageBox.Show("Please fill all fields!") |> ignore
+)
 
 // Run the application
 [<STAThread>]

@@ -38,6 +38,8 @@ let isValidEmail (email: string): bool =
 
 
 
+
+
 // Add ui elements to the form
 form.Controls.Add(nameLabel)
 form.Controls.Add(nameBox)

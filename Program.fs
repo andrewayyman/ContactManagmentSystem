@@ -56,10 +56,9 @@ form.Controls.Add(saveButton)
 form.Controls.Add(searchBox)
 form.Controls.Add(searchButton)
 form.Controls.Add(contactList)
-// ------------------------- Form ------------------------- //
+// ------------------------- End Form ------------------------- //
 
-////////////////// add contact /////////////////
-
+// ------------------------- AddContact ------------------------- //
 //contact type
 type Contact = {
     Name: string
@@ -81,10 +80,10 @@ let updateContactList () : unit =
     |> List.iter (fun c -> 
         contactList.Items.Add($"Name: {c.Name}, Phone: {c.PhoneNumber}, Email: {c.Email}") |> ignore
     )
+// ------------------------- End AddContact ------------------------- //
 
 
-//////// delete contact////////
-
+// ------------------------- DeleteContact ------------------------- //
 let deleteContact () : unit =
     match contactList.SelectedIndex with
     | idx when idx >= 0 ->
@@ -95,9 +94,11 @@ let deleteContact () : unit =
             MessageBox.Show("Contact deleted successfully.") |> ignore
         | None -> MessageBox.Show("Selected contact is invalid.") |> ignore
     | _ -> MessageBox.Show("Please select a contact to delete!") |> ignore
+// ------------------------- End DeleteContact ------------------------- //
 
 
-// event handlers 
+
+// ------------------------- EventHandlers ------------------------- //
 // on add button
 addButton.Click.Add (fun _ ->
     let name: string = nameBox.Text

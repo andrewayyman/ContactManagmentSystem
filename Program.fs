@@ -66,23 +66,22 @@ type Contact = {
 }
 
 // List to store contacts
-let mutable contacts: Contact list = []
-
+let contacts: Contact list ref = ref []
 
 // Function to add a contact
-let addContact (contact: Contact): unit =
-    contacts <- contact :: contacts
+let addContact (contact: Contact) : unit =
+    contacts := contact :: !contacts
 
 // Function to update the ListBox with contacts after adding
-let updateContactList (): unit =
+let updateContactList () : unit =
     contactList.Items.Clear()
-    contacts
+    !contacts
     |> List.iter (fun c -> 
         contactList.Items.Add($"Name: {c.Name}, Phone: {c.PhoneNumber}, Email: {c.Email}") |> ignore
     )
 
-
-// Add event handlers 
+// event handlers 
+// on add button
 addButton.Click.Add (fun _ ->
     let name: string = nameBox.Text
     let phone: string = phoneBox.Text
@@ -104,14 +103,9 @@ addButton.Click.Add (fun _ ->
         MessageBox.Show("Please fill all fields!") |> ignore
 )
 
+
 // Run the application
 [<STAThread>]
 Application.Run(form)
-
-
-
-
-
-
 
 

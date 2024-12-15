@@ -1,30 +1,62 @@
 ﻿open System
 open System.Windows.Forms
-
+open System.Drawing
 
 // ------------------------- Form ------------------------- //
 // Create the form
-let form: Form = new Form(Text = "Contact Management System", Width = 600, Height = 450)
+let form: Form = new Form(Text = "Contact Management System", Width = 800, Height = 650)
+form.BackColor <- Color.White
+form.StartPosition <- FormStartPosition.CenterScreen
+form.FormBorderStyle <- FormBorderStyle.FixedDialog
+form.MaximizeBox <- false
+form.MinimizeBox <- false
 
-// UI elements
-let nameLabel: Label = new Label(Text = "Name:", Top = 20, Left = 10)
-let nameBox: TextBox = new TextBox(Top = 20, Left = 110, Width = 200)
-let phoneLabel: Label = new Label(Text = "Phone:", Top = 60, Left = 10)
-let phoneBox: TextBox = new TextBox(Top = 60, Left = 110, Width = 200)
-let emailLabel: Label = new Label(Text = "Email:", Top = 100, Left = 10)
-let emailBox: TextBox = new TextBox(Top = 100, Left = 110, Width = 200)
-let searchBox: TextBox = new TextBox(Top = 170, Left = 100, Width = 200)
-let searchButton: Button = new Button(Text = "Search", Top = 170, Left = 310)
-let addButton: Button = new Button(Text = "Add Contact", Top = 140, Left = 100, Width = 100)
-let deleteButton: Button = new Button(Text = "Delete Contact", Top = 140, Left = 400, Width = 100)
-let updateButton: Button = new Button(Text = "Update Contact", Top = 140, Left = 200, Width = 100)
-let saveButton: Button = new Button(Text = "Save Changes", Top = 140, Left = 300, Width = 100)
-let contactList: ListBox = new ListBox(Top = 200, Left = 10, Width = 560, Height = 150)
+// Set title label at the top
+let titleLabel: Label = new Label(Text = "Contact Management System", Top = 10, Left = 10, Width = 760, Font = new Font("Segoe UI", 14.0f, FontStyle.Bold))
+titleLabel.TextAlign <- ContentAlignment.MiddleCenter
+titleLabel.AutoSize <- false
 
+// UI elements styles
+let nameLabel: Label = new Label(Text = "Name:", Top = 60, Left = 20, Width = 80, Font = new Font("Segoe UI", 12.0f, FontStyle.Bold), ForeColor = Color.DarkSlateGray)
+let nameBox: TextBox = new TextBox(Top = 60, Left = 110, Width = 250, Font = new Font("Segoe UI", 12.0f, FontStyle.Bold), BackColor = Color.LightGray, ForeColor = Color.Black, BorderStyle = BorderStyle.FixedSingle)
+nameBox.Padding <- new Padding(10)
+nameBox.CharacterCasing <- CharacterCasing.Normal  
 
+let phoneLabel: Label = new Label(Text = "Phone:", Top = 100, Left = 20, Width = 80, Font = new Font("Segoe UI", 12.0f, FontStyle.Bold), ForeColor = Color.DarkSlateGray)
+let phoneBox: TextBox = new TextBox(Top = 100, Left = 110, Width = 250, Font = new Font("Segoe UI", 12.0f, FontStyle.Bold), BackColor = Color.LightGray, ForeColor = Color.Black, BorderStyle = BorderStyle.FixedSingle)
+phoneBox.Padding <- new Padding(10)
+phoneBox.CharacterCasing <- CharacterCasing.Normal  
 
+let emailLabel: Label = new Label(Text = "Email:", Top = 140, Left = 20, Width = 80, Font = new Font("Segoe UI", 12.0f, FontStyle.Bold), ForeColor = Color.DarkSlateGray)
+let emailBox: TextBox = new TextBox(Top = 140, Left = 110, Width = 250, Font = new Font("Segoe UI", 12.0f, FontStyle.Bold), BackColor = Color.LightGray, ForeColor = Color.Black, BorderStyle = BorderStyle.FixedSingle)
+emailBox.Padding <- new Padding(10)
+emailBox.CharacterCasing <- CharacterCasing.Normal  
 
-// ensure that phone number only have 11 digit
+let searchBox: TextBox = new TextBox(Top = 210, Left = 110, Width = 250, Font = new Font("Segoe UI", 12.0f, FontStyle.Bold), BackColor = Color.LightGray, ForeColor = Color.Black, BorderStyle = BorderStyle.FixedSingle)
+searchBox.Padding <- new Padding(10)
+
+// Search Button
+let searchButton: Button = new Button(Text = "Search", Top = 210, Left = 370, Width = 120, Height = 40, Font = new Font("Segoe UI", 10.0f), BackColor = Color.LightBlue, FlatStyle = FlatStyle.Flat)
+searchButton.FlatAppearance.BorderSize <- 0
+searchButton.Cursor <- Cursors.Hand
+
+// Buttons styles
+let addButton: Button = new Button(Text = "Add Contact", Top = 270, Left = 110, Width = 120, Height = 40, Font = new Font("Segoe UI", 10.0f), BackColor = Color.LightGreen, FlatStyle = FlatStyle.Flat)
+let deleteButton: Button = new Button(Text = "Delete Contact", Top = 270, Left = 240, Width = 120, Height = 40, Font = new Font("Segoe UI", 10.0f), BackColor = Color.LightCoral, FlatStyle = FlatStyle.Flat)
+let updateButton: Button = new Button(Text = "Update Contact", Top = 270, Left = 370, Width = 120, Height = 40, Font = new Font("Segoe UI", 10.0f), BackColor = Color.LightYellow, FlatStyle = FlatStyle.Flat)
+let saveButton: Button = new Button(Text = "Save Changes", Top = 270, Left = 500, Width = 120, Height = 40, Font = new Font("Segoe UI", 10.0f), BackColor = Color.LightSteelBlue, FlatStyle = FlatStyle.Flat)
+
+// ListBox for contact list
+let contactList: ListBox = new ListBox(Top = 320, Left = 20, Width = 740, Height = 250, Font = new Font("Segoe UI", 10.0f))
+
+// Styling for buttons and inputs
+[addButton; deleteButton; updateButton; saveButton; searchButton]
+    |> List.iter (fun button -> button.FlatAppearance.BorderSize <- 0)
+
+[addButton; deleteButton; updateButton; saveButton; searchButton]
+    |> List.iter (fun button -> button.Cursor <- Cursors.Hand)
+
+// Ensure that phone number only has 11 digits
 phoneBox.KeyPress.Add(fun e ->
     if not (Char.IsDigit(e.KeyChar) || e.KeyChar = '\b') then
         e.Handled <- true
@@ -32,17 +64,12 @@ phoneBox.KeyPress.Add(fun e ->
         e.Handled <- true
 )
 
-
- // ensure that Email contains @ 
+// Ensure that Email contains "@"
 let isValidEmail (email: string): bool =
-    email.Contains("@") 
+    email.Contains("@")
 
-
-
-
-
-
-// Add ui elements to the form
+// Add UI elements to the form
+form.Controls.Add(titleLabel)
 form.Controls.Add(nameLabel)
 form.Controls.Add(nameBox)
 form.Controls.Add(phoneLabel)
@@ -57,6 +84,7 @@ form.Controls.Add(searchBox)
 form.Controls.Add(searchButton)
 form.Controls.Add(contactList)
 // ------------------------- End Form ------------------------- //
+
 
 // ------------------------- AddContact ------------------------- //
 //contact type
@@ -97,7 +125,7 @@ let deleteContact () : unit =
 // ------------------------- End DeleteContact ------------------------- //
 
 
-//-------------------------- search contact ------------------------------//
+//-------------------------- SearchContact ------------------------------//
 let searchContacts (query: string) : unit =
     let results = 
         !contacts 
@@ -109,12 +137,10 @@ let searchContacts (query: string) : unit =
     |> List.iter (fun c -> 
         contactList.Items.Add($"Name: {c.Name}, Phone: {c.PhoneNumber}, Email: {c.Email}") |> ignore
     )
-// ------------------------- End search Contact ------------------------- //
-
-//-------------------------- Update contact ------------------------------//
+// ------------------------- End SearchContact ------------------------- //
 
 
-// update contact
+//-------------------------- UpdateConntact ------------------------------//
 let updateContact () : unit =
     match contactList.SelectedIndex with
     | idx when idx >= 0 ->
@@ -145,8 +171,7 @@ let saveUpdatedContact () : unit =
             phoneBox.Clear()
             emailBox.Clear()
     |  _-> MessageBox.Show("Please select a contact to save changes!") |> ignore 
-
-    // ------------------------- End Update Contact ------------------------- //
+// ------------------------- End UpdateConntact ------------------------- //
 
 
 
@@ -191,7 +216,7 @@ updateButton.Click.Add(fun _-> updateContact ())
 // Save button click
 saveButton.Click.Add(fun  _-> saveUpdatedContact ())
 
-// Run the application
+
 [<STAThread>]
 Application.Run(form)
 

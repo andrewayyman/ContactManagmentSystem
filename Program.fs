@@ -97,6 +97,20 @@ let deleteContact () : unit =
 // ------------------------- End DeleteContact ------------------------- //
 
 
+//-------------------------- search contact ------------------------------//
+let searchContacts (query: string) : unit =
+    let results = 
+        !contacts 
+        |> List.filter (fun c -> 
+            c.Name.ToLower().Contains(query.ToLower()) || c.PhoneNumber.ToLower().Contains(query.ToLower())
+        )
+    contactList.Items.Clear()
+    results
+    |> List.iter (fun c -> 
+        contactList.Items.Add($"Name: {c.Name}, Phone: {c.PhoneNumber}, Email: {c.Email}") |> ignore
+    )
+// ------------------------- End search Contact ------------------------- //
+
 
 // ------------------------- EventHandlers ------------------------- //
 // on add button
@@ -123,6 +137,15 @@ addButton.Click.Add (fun _ ->
 
 // on Delete button 
 deleteButton.Click.Add(fun _ -> deleteContact ())
+
+// on search button 
+searchButton.Click.Add(fun _ -> 
+    let query = searchBox.Text
+    if query <> "" then
+        searchContacts query
+    else
+        MessageBox.Show("Please enter a search term.") |> ignore
+)
 
 // Run the application
 [<STAThread>]

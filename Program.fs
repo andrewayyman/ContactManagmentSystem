@@ -125,8 +125,7 @@ let updateContact () : unit =
             phoneBox.Text <- selectedContact.PhoneNumber
             emailBox.Text <- selectedContact.Email
         | None -> MessageBox.Show("Selected contact is invalid.") |> ignore
-        | _ -> MessageBox.Show("Please select a contact to update!") |> ignore
-
+    | _ -> MessageBox.Show("Please select a contact to update!") |> ignore
 // save updated contact
 let saveUpdatedContact () : unit =
     match contactList.SelectedIndex with

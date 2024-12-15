@@ -111,6 +111,45 @@ let searchContacts (query: string) : unit =
     )
 // ------------------------- End search Contact ------------------------- //
 
+//-------------------------- Update contact ------------------------------//
+
+
+// update contact
+let updateContact () : unit =
+    match contactList.SelectedIndex with
+    | idx when idx >= 0 ->
+        match !contacts |> List.tryItem idx with
+        | Some selectedContact ->
+            // Populate textboxes with selected contact's details
+            nameBox.Text <- selectedContact.Name
+            phoneBox.Text <- selectedContact.PhoneNumber
+            emailBox.Text <- selectedContact.Email
+        | None -> MessageBox.Show("Selected contact is invalid.") |> ignore
+        | _ -> MessageBox.Show("Please select a contact to update!") |> ignore
+
+// save updated contact
+let saveUpdatedContact () : unit =
+    match contactList.SelectedIndex with
+    | idx when idx >= 0 ->
+        let updatedContact = { Name = nameBox.Text; PhoneNumber = phoneBox.Text; Email = emailBox.Text }
+        if not (isValidEmail updatedContact.Email) then
+            MessageBox.Show(" valid email address is must have this format (anything@mail.com)") |> ignore
+        elif updatedContact.PhoneNumber.Length > 11 then
+            MessageBox.Show("Phone number must be 11 digits or less!") |> ignore
+        else
+            contacts := 
+                !contacts
+                |> List.mapi (fun i c -> if i = idx then updatedContact else c)
+            updateContactList()
+            MessageBox.Show("Contact updated successfully.") |> ignore
+            nameBox.Clear()
+            phoneBox.Clear()
+            emailBox.Clear()
+    |  _-> MessageBox.Show("Please select a contact to save changes!") |> ignore 
+
+    // ------------------------- End Update Contact ------------------------- //
+
+
 
 // ------------------------- EventHandlers ------------------------- //
 // on add button
@@ -146,6 +185,12 @@ searchButton.Click.Add(fun _ ->
     else
         MessageBox.Show("Please enter a search term.") |> ignore
 )
+
+// Update button click
+updateButton.Click.Add(fun _-> updateContact ())
+
+// Save button click
+saveButton.Click.Add(fun  _-> saveUpdatedContact ())
 
 // Run the application
 [<STAThread>]

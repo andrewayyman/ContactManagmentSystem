@@ -22,6 +22,8 @@ let saveButton: Button = new Button(Text = "Save Changes", Top = 140, Left = 300
 let contactList: ListBox = new ListBox(Top = 200, Left = 10, Width = 560, Height = 150)
 
 
+
+
 // ensure that phone number only have 11 digit
 phoneBox.KeyPress.Add(fun e ->
     if not (Char.IsDigit(e.KeyChar) || e.KeyChar = '\b') then

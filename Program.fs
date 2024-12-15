@@ -132,11 +132,16 @@ let searchContacts (query: string) : unit =
         |> List.filter (fun c -> 
             c.Name.ToLower().Contains(query.ToLower()) || c.PhoneNumber.ToLower().Contains(query.ToLower())
         )
+    
     contactList.Items.Clear()
-    results
-    |> List.iter (fun c -> 
-        contactList.Items.Add($"Name: {c.Name}, Phone: {c.PhoneNumber}, Email: {c.Email}") |> ignore
-    )
+
+    if results.IsEmpty then
+        MessageBox.Show($"{query} is not found!") |> ignore
+    else
+        results
+        |> List.iter (fun c -> 
+            contactList.Items.Add($"Name: {c.Name}, Phone: {c.PhoneNumber}, Email: {c.Email}") |> ignore
+        )
 // ------------------------- End SearchContact ------------------------- //
 
 
@@ -183,7 +188,7 @@ addButton.Click.Add (fun _ ->
     let email: string = emailBox.Text
     if name <> "" && phone <> "" && email <> "" then
         if not (isValidEmail email) then
-            MessageBox.Show("Please enter a valid email address!") |> ignore
+            MessageBox.Show("valid email address is must have this format (anything@mail.com)") |> ignore
         elif phone.Length > 11 then
             MessageBox.Show("Phone number must be 11 digits !") |> ignore
         else

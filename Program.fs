@@ -82,21 +82,6 @@ let updateContactList () : unit =
         contactList.Items.Add($"Name: {c.Name}, Phone: {c.PhoneNumber}, Email: {c.Email}") |> ignore
     )
 
-
-//////// delete contact////////
-
-let deleteContact () : unit =
-    match contactList.SelectedIndex with
-    | idx when idx >= 0 ->
-        match !contacts |> List.tryItem idx with
-        | Some selectedContact ->
-            contacts := List.filter (fun c -> c <> selectedContact) !contacts
-            updateContactList()
-            MessageBox.Show("Contact deleted successfully.") |> ignore
-        | None -> MessageBox.Show("Selected contact is invalid.") |> ignore
-    | _ -> MessageBox.Show("Please select a contact to delete!") |> ignore
-
-
 // event handlers 
 // on add button
 addButton.Click.Add (fun _ ->
@@ -120,8 +105,6 @@ addButton.Click.Add (fun _ ->
         MessageBox.Show("Please fill all fields!") |> ignore
 )
 
-// on Delete button 
-deleteButton.Click.Add(fun _ -> deleteContact ())
 
 // Run the application
 [<STAThread>]

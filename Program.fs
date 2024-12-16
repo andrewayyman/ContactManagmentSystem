@@ -40,7 +40,7 @@ let searchButton: Button = new Button(Text = "Search", Top = 210, Left = 370, Wi
 searchButton.FlatAppearance.BorderSize <- 0
 searchButton.Cursor <- Cursors.Hand
 
-// Buttons styles
+// Modern Buttons styles 
 let addButton: Button = new Button(Text = "Add Contact", Top = 270, Left = 110, Width = 120, Height = 40, Font = new Font("Segoe UI", 10.0f), BackColor = Color.LightGreen, FlatStyle = FlatStyle.Flat)
 let deleteButton: Button = new Button(Text = "Delete Contact", Top = 270, Left = 240, Width = 120, Height = 40, Font = new Font("Segoe UI", 10.0f), BackColor = Color.LightCoral, FlatStyle = FlatStyle.Flat)
 let updateButton: Button = new Button(Text = "Update Contact", Top = 270, Left = 370, Width = 120, Height = 40, Font = new Font("Segoe UI", 10.0f), BackColor = Color.LightYellow, FlatStyle = FlatStyle.Flat)
